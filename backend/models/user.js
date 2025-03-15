@@ -1,6 +1,9 @@
-// models/user.js
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
+
+const User = sequelize.define(
+  "User",
+  {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -9,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     password: {
       type: DataTypes.STRING,
@@ -17,9 +23,13 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "user", // Pode ser 'admin' ou 'user' dependendo do papel
+      defaultValue: "user",
     },
-  });
+  },
+  {
+    // Ativar as colunas createdAt e updatedAt automaticamente
+    timestamps: true, // Isso diz ao Sequelize para criar as colunas 'createdAt' e 'updatedAt'
+  }
+);
 
-  return User;
-};
+module.exports = User;
